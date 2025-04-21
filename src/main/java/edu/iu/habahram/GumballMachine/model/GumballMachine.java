@@ -68,7 +68,7 @@ public class GumballMachine implements IGumballMachine {
             state = SOLD;
             succeeded = true;
         }
-
+        releaseBall();
         return new TransitionResult(succeeded, message, state, count);
     }
 
@@ -89,8 +89,30 @@ public class GumballMachine implements IGumballMachine {
 
     @Override
     public void releaseBall() {
+        boolean succeeded = false;
+        String message = "";
 
+        if (state.equalsIgnoreCase(SOLD)) {
+            if (count > 0) {
+                count--;
+                message = "Gumball released";
+                succeeded = true;
+                if (count == 0) {
+                    message += " Oops, out of gumballs!";
+                    state = SOLD_OUT;
+                } else {
+                    state = NO_QUARTER;
+                }
+            } else {
+                message = "No gumball released";
+                state = SOLD_OUT;
+            }
+        } else if (state.equalsIgnoreCase(NO_QUARTER)) {
+            message = "You need to pay first";
+        } else if (state.equalsIgnoreCase(HAS_QUARTER)) {
+            message = "You need to turn the crank first";
+        } else if (state.equalsIgnoreCase(SOLD_OUT)) {
+            message = "No gumball released";
+        }
     }
-
-
 }
