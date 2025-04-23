@@ -1,6 +1,6 @@
 package edu.iu.habahram.GumballMachine.model;
 
-public class HasQuarterState implements IState{
+public class HasQuarterState implements IState {
     IGumballMachine gumballMachine;
 
     public HasQuarterState(IGumballMachine gumballMachine) {
@@ -9,37 +9,30 @@ public class HasQuarterState implements IState{
 
     @Override
     public TransitionResult insertQuarter() {
-        gumballMachine.changeTheStateTo(GumballMachineState.HAS_QUARTER);
-        String message = "You inserted a quarter";
-        boolean succeeded = true;
-        int count = gumballMachine.getCount();
-        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), count);
+        return new TransitionResult(false, "You can't insert another quarter", gumballMachine.getTheStateName(), gumballMachine.getCount());
     }
 
     @Override
     public TransitionResult ejectQuarter() {
-        String message = "You haven't inserted a quarter";
-        boolean succeeded = false;
-        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), gumballMachine.getCount());
+        gumballMachine.changeTheStateTo(GumballMachineState.NO_QUARTER);
+        return new TransitionResult(true, "Quarter returned", gumballMachine.getTheStateName(), gumballMachine.getCount());
     }
 
     @Override
     public TransitionResult turnCrank() {
-        String message = "You turned, but there's no quarter";
-        boolean succeeded = false;
-        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), gumballMachine.getCount());
+        gumballMachine.changeTheStateTo(GumballMachineState.GUMBALL_SOLD);
+        return new TransitionResult(true, "You turned the crank...", gumballMachine.getTheStateName(), gumballMachine.getCount());
     }
 
     @Override
     public TransitionResult dispense() {
-        String message = "You need to pay first";
-        boolean succeeded = false;
-        return new TransitionResult(succeeded, message, gumballMachine.getTheStateName(), gumballMachine.getCount());
-
+        return new TransitionResult(false, "Turn the crank to get a gumball", gumballMachine.getTheStateName(), gumballMachine.getCount());
     }
 
     @Override
     public String getTheName() {
-        return GumballMachineState.NO_QUARTER.name();
+        return GumballMachineState.HAS_QUARTER.name();
     }
+
+
 }
