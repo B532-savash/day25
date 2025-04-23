@@ -115,4 +115,9 @@ public class GumballMachine implements IGumballMachine {
             message = "No gumball released";
         }
     }
+
+    @Override
+    public void refill(int count) {
+
+    }
 }

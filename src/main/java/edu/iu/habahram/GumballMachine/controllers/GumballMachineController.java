@@ -63,4 +63,9 @@ public class GumballMachineController {
             throw new RuntimeException(e);
         }
     }
+
+    @PutMapping("/refill")
+    public TransitionResult<String> refillMachine(@RequestParam String id, @RequestParam int count) {
+        //work in progress
+    }
 }
