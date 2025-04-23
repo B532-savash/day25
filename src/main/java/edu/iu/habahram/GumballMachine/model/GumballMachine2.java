@@ -55,7 +55,10 @@ public class GumballMachine2 implements IGumballMachine{
 
     @Override
     public TransitionResult turnCrank() {
-        state.turnCrank();
+
+        if(!state.turnCrank().succeeded()) {
+            return new TransitionResult(false, "Customer did not insert a quarter first", noQuarterState.getTheName(), count);
+        }
         return state.dispense();
     }
 
