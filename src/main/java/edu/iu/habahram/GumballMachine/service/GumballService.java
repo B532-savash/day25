@@ -58,6 +58,25 @@ public class GumballService implements IGumballService{
         return transit(id, Transition.TURN_CRANK);
     }
 
+    @Override
+    public TransitionResult refill(String id, int count) throws IOException {
+        if (count <= 0) {
+            return new TransitionResult (false, "Invalid refill count. Please provide a positive number of gumballs.", null, null);
+        }
+
+        GumballMachineRecord record = gumballRepository.findById(id);
+
+        GumballMachine2 machine = new GumballMachine2(record.getId(), record.getState(), record.getCount());
+
+        machine.refill(count);
+
+        record.setState(machine.getTheStateName());
+        record.setCount(machine.getCount());
+        save(record);
+
+        return new TransitionResult (true, "Machine refilled with " + count + " gumballs", machine.getTheStateName(), machine.getCount());
+    }
+
 
 
     @Override

@@ -69,7 +69,12 @@ public class GumballMachine2 implements IGumballMachine{
 
     @Override
     public void refill(int count) {
-
+        this.count += count;
+        if (this.count > 0) {
+            changeTheStateTo(GumballMachineState.NO_QUARTER);
+        } else {
+            changeTheStateTo(GumballMachineState.OUT_OF_GUMBALLS);
+        }
     }
 
     @Override
